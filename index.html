@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Compare Michigan State University dining halls by location, atmosphere, hours, and dietary needs." />
+    <meta name="theme-color" content="#0b402c" />
+    <title>Spartan Dining Guide</title>
+    <link rel="preconnect" href="https://edge.sitecorecloud.io" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b402c'/%3E%3Cpath d='M18 17v14c0 6 4 10 9 11v7h-6v4h16v-4h-6v-7c5-1 9-5 9-11V17h-4v14c0 4-2 6-5 7V17h-4v21c-3-1-5-3-5-7V17z' fill='%23d7ff45'/%3E%3Cpath d='M45 17h4v36h-4z' fill='white'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Spartan Dining Guide home">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span>Spartan Dining Guide</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#explore">Explore</a>
+        <a href="#locations">Locations</a>
+        <a href="#compare">Compare <span id="compareCount" class="nav-count">0</span></a>
+        <a href="https://maps.msu.edu/interactive/" target="_blank" rel="noreferrer">Campus map ↗</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="decision-panel" aria-labelledby="decisionTitle">
+        <div class="decision-copy">
+          <p class="eyebrow"><span class="live-dot"></span><span id="localTime">East Lansing time</span></p>
+          <h1 id="decisionTitle">Where should we eat?</h1>
+          <p>Choose what matters right now. We’ll rank the dining halls that fit.</p>
+        </div>
+
+        <form id="finderForm" class="finder-grid">
+          <label>
+            <span>Starting area</span>
+            <select id="areaSelect">
+              <option value="any">Anywhere on campus</option>
+              <option value="brody">Brody</option>
+              <option value="north">North</option>
+              <option value="river">River Trail</option>
+              <option value="south">South</option>
+              <option value="east">East</option>
+            </select>
+          </label>
+          <label>
+            <span>I care most about</span>
+            <select id="prioritySelect">
+              <option value="balanced">Best overall match</option>
+              <option value="quiet">A calmer atmosphere</option>
+              <option value="variety">Lots of food choices</option>
+              <option value="late">Eating later</option>
+              <option value="study">A place to sit and study</option>
+            </select>
+          </label>
+          <label>
+            <span>Dietary preference</span>
+            <select id="dietSelect">
+              <option value="any">No preference</option>
+              <option value="vegetarian">Vegetarian-friendly</option>
+              <option value="vegan">Vegan-friendly</option>
+              <option value="allergen">Allergen-conscious</option>
+              <option value="halal">Halal options</option>
+            </select>
+          </label>
+          <button class="primary-button" type="submit">Find my best match <span aria-hidden="true">→</span></button>
+        </form>
+
+        <div id="recommendation" class="recommendation" aria-live="polite"></div>
+      </section>
+
+      <section id="explore" class="explore-section" aria-labelledby="exploreTitle">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">8 residential dining halls</p>
+            <h2 id="exploreTitle">Explore every hall</h2>
+          </div>
+          <div class="view-actions" role="group" aria-label="View options">
+            <button id="listViewButton" class="icon-button active" type="button" aria-pressed="true">List</button>
+            <button id="zoneViewButton" class="icon-button" type="button" aria-pressed="false">Zones</button>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <label class="search-box">
+            <span aria-hidden="true">⌕</span>
+            <span class="sr-only">Search dining halls</span>
+            <input id="searchInput" type="search" placeholder="Search hall, building, address, or feature" />
+          </label>
+          <div class="filter-chips" role="group" aria-label="Dining hall filters">
+            <button type="button" class="chip active" data-filter="all">All halls</button>
+            <button type="button" class="chip" data-filter="open">Open now</button>
+            <button type="button" class="chip" data-filter="quiet">Calmer</button>
+            <button type="button" class="chip" data-filter="variety">More variety</button>
+            <button type="button" class="chip" data-filter="study">Study-friendly</button>
+          </div>
+        </div>
+
+        <div id="hallGrid" class="hall-grid" aria-live="polite"></div>
+        <div id="emptyState" class="empty-state" hidden>
+          <p>No dining halls match those filters.</p>
+          <button id="resetFilters" type="button">Clear filters</button>
+        </div>
+      </section>
+
+      <section id="locations" class="location-section" aria-labelledby="locationsTitle">
+        <div class="section-heading location-heading">
+          <div>
+            <p class="eyebrow">Know the building name</p>
+            <h2 id="locationsTitle">Find it on campus</h2>
+          </div>
+          <p>Dining names can be unfamiliar. Look for the residence hall name on signs and in the MSU map.</p>
+        </div>
+
+        <div class="campus-map-shell">
+          <div class="campus-map" aria-label="Schematic showing the relative positions of eight MSU dining halls">
+            <div class="map-compass" aria-hidden="true"><span>N</span><i></i></div>
+            <span class="map-axis map-axis-west" aria-hidden="true">West campus</span>
+            <span class="map-axis map-axis-east" aria-hidden="true">East campus</span>
+            <span class="map-axis map-axis-north" aria-hidden="true">North</span>
+            <span class="map-axis map-axis-south" aria-hidden="true">South</span>
+            <div class="river-line" aria-hidden="true"><span>Red Cedar River</span></div>
+            <div id="campusMapMarkers"></div>
+          </div>
+        </div>
+        <p class="map-note">Schematic, not to scale. Pins show relative building-center positions — use the official MSU map link for walking directions and entrances.</p>
+        <div id="locationList" class="location-list"></div>
+      </section>
+
+      <section id="compare" class="compare-section" aria-labelledby="compareTitle">
+        <div class="section-heading compare-heading">
+          <div>
+            <p class="eyebrow">Side-by-side</p>
+            <h2 id="compareTitle">Compare your shortlist</h2>
+          </div>
+          <p>Select up to three dining halls from the list.</p>
+        </div>
+        <div id="compareContent" class="compare-content"></div>
+      </section>
+
+      <section class="data-note" aria-label="Data note">
+        <div>
+          <span class="note-index">01</span>
+          <h2>Built on official information, improved by student context.</h2>
+        </div>
+        <p>Names and regular hours use MSU’s Eat at State information. Building addresses and map points use MSU’s official campus resources. Atmosphere scores are editorial prototype data and should be validated through student surveys and campus visits before launch.</p>
+        <div class="source-links">
+          <a href="https://eatatstate.msu.edu/dining-hall-hours" target="_blank" rel="noreferrer">Official hours ↗</a>
+          <a href="https://eatatstate.msu.edu/campus-dining" target="_blank" rel="noreferrer">Eat at State ↗</a>
+          <a href="https://liveon.msu.edu/neighborhoods" target="_blank" rel="noreferrer">Residence halls ↗</a>
+          <a href="https://maps.msu.edu/interactive/" target="_blank" rel="noreferrer">Official campus map ↗</a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Student project prototype · Not affiliated with Michigan State University</p>
+      <p>Information may change for breaks, events, and special hours.</p>
+    </footer>
+
+    <dialog id="detailDialog" class="detail-dialog" aria-labelledby="dialogTitle">
+      <button id="closeDialog" class="dialog-close" type="button" aria-label="Close details">×</button>
+      <div id="dialogContent"></div>
+    </dialog>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
